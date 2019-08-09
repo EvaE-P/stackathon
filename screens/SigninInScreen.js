@@ -1,87 +1,99 @@
 import * as WebBrowser from "expo-web-browser";
-import React from "react";
+import React, { Component } from "react";
 import {
+  Modal,
+  TextInput,
+  View,
+  TouchableHighlight,
   Image,
-  Platform,
-  ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View
+  Platform
 } from "react-native";
+import { Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { FirebaseWrapper } from "../firebase/firebase";
+import * as firebase from "firebase";
 
-import { MonoText } from "../components/StyledText";
-import { Post } from "../components/Post";
-import { Header } from "../components/Header";
+export default class SigninInScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: ""
+    };
+  }
+  async componentDidMount() {
+    console.log("I am in CompDidMount", this.props);
+    // const { navigate } = this.props.navigation;
+  }
+  async createPost() {
+    try {
+      console.log("ayoooo", this.state.email);
+      // make call to Firebase
+      await FirebaseWrapper.GetInstance().CreateNewDocument("users", {
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        email: this.state.email,
+        password: this.state.password
+      });
+      // this.props.closeModal();
+    } catch (err) {
+      console.log("something wrong component post", err);
+    }
+  }
 
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <View style={styles.container}>
-          <Header text="Welcome to appCollect" />
-          <ScrollView style={styles.container}>
-            <Post />
-          </ScrollView>
-        </View>
-
-        <View style={styles.getStartedContainer}>
-          <DevelopmentModeNotice />
-
-          <Text style={styles.getStartedText}>
-            Add content to your profile here
-          </Text>
-
-          <TouchableOpacity
-            onPress={() => this.setState({ isModalVisible: true })}
-            style={styles.buttonContainer}
-          >
-            <Image
-              style={styles.button}
-              source={require("./../assets/images/images.png")}
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <View style={styles.contentContainer}>
+          <TextInput
+            multiline={true}
+            numberOfLines={2}
+            onChangeText={email => this.setState({ email })}
+            placeholder="Your email"
+            value={this.state.email}
+            style={styles.input}
+          />
+          <TextInput
+            multiline={true}
+            numberOfLines={2}
+            onChangeText={password => this.setState({ password })}
+            placeholder="Your password"
+            value={this.state.password}
+            style={styles.input}
+          />
+          {this.state.password.length === 6 ? (
+            <Button
+              title="Go to your profile"
+              // onPress={() => this.props.navigation.navigate("ProfileScreen")
+              onPress={() =>
+                this.props.navigation.navigate("Post", {
+                  name: this.state.email
+                })
+              }
             />
-          </TouchableOpacity>
-          {/* <View
-            style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-          >
-            <MonoText>screens/HomeScreen.js</MonoText>
-          </View> */}
-
-          <Text style={styles.getStartedText}>
-            A space to collect from your favorite sites
-          </Text>
+          ) : (
+            <View>
+              <Text>{""}</Text>
+            </View>
+          )}
         </View>
-
-        <View style={styles.helpContainer}>
-          <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-            <Text style={styles.helpLinkText}>
-              Help, it didn’t automatically reload!
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
-        </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}
-        >
-          <MonoText style={styles.codeHighlightText}>
-            navigation/MainTabNavigator.js
-          </MonoText>
-        </View>
+        <Button
+          icon={{ name: "home", size: 30 }}
+          type="clear"
+          title=""
+          color="black"
+          onPress={() => this.props.navigation.navigate("ProfileScreen")}
+        />
       </View>
-    </View>
-  );
+    );
+  }
 }
 
-HomeScreen.navigationOptions = {
+SigninInScreen.navigationOptions = {
   header: null
 };
 

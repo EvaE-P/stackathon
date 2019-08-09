@@ -44,7 +44,16 @@ export class FirebaseWrapper {
   async SetupCollectionListener(collectionPath, callback) {
     try {
       console.log("calling setup did work");
-      await this._firestore;
+      await this._firestore
+        .collection(collectionPath)
+        .orderBy("createdAt", "desc")
+        .onSnapshot(querySnapshot => {
+          let container = [];
+          querySnapshot.forEach(doc => {
+            container.push(doc.data());
+          });
+          return callback(container);
+        });
     } catch (err) {
       console.log("OH no something did not work", err);
     }
