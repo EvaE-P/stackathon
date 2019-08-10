@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 import * as WebBrowser from "expo-web-browser";
 import React, { Component } from "react";
 import {
@@ -19,29 +20,55 @@ export default class SigninInScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "",
-      lastName: "",
       email: "",
-      password: ""
+      password: "",
+      firstName: true,
+      name: ""
     };
   }
-  async componentDidMount() {
-    console.log("I am in CompDidMount", this.props);
-    // const { navigate } = this.props.navigation;
-  }
-  async createPost() {
+  async componentDidMount() {}
+  async signIn() {
     try {
       console.log("ayoooo", this.state.email);
       // make call to Firebase
-      await FirebaseWrapper.GetInstance().CreateNewDocument("users", {
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        email: this.state.email,
-        password: this.state.password
-      });
-      // this.props.closeModal();
+
+      await firebase
+        .auth()
+        .signInWithEmailAndPassword(this.state.email, this.state.password)
+        .catch(function(error) {
+          // Handle Errors here.
+          console.log("could not sign IN", error);
+          // ...
+        });
+      if (await firebase.auth().currentUser) {
+        const name = this.state.email;
+        return this.setState({
+          email: "",
+          password: "",
+          firstName: false,
+          name: name
+        });
+      }
     } catch (err) {
-      console.log("something wrong component post", err);
+      console.log("something wrong component signinIn", err);
+    }
+  }
+  async signedIn() {
+    try {
+      await firebase.auth().onAuthStateChanged(function(user) {
+        let email;
+        if (user) {
+          // User is signed in.
+          email = user.email;
+          return email;
+
+          // ...
+        } else {
+          return false;
+        }
+      });
+    } catch (err) {
+      console.log("not signed in", err);
     }
   }
 
@@ -61,17 +88,32 @@ export default class SigninInScreen extends Component {
             multiline={true}
             numberOfLines={2}
             onChangeText={password => this.setState({ password })}
+            secureTextEntry={true}
+            password={true}
+            blurOnSubmit={true}
             placeholder="Your password"
             value={this.state.password}
             style={styles.input}
           />
-          {this.state.password.length === 6 ? (
+          <Text>{"    "}</Text>
+          <Text>{"    "}</Text>
+          <Button
+            title="signIn"
+            icon={<Icon name="trophy" />}
+            type="outline"
+            onPress={() => this.signIn()}
+          />
+          <Text>{"    "}</Text>
+          <Text>{"    "}</Text>
+          <Text>{"    "}</Text>
+          {!this.state.firstName ? (
             <Button
               title="Go to your profile"
-              // onPress={() => this.props.navigation.navigate("ProfileScreen")
+              icon={{ name: "motorcycle", size: 20 }}
+              type="outline"
               onPress={() =>
                 this.props.navigation.navigate("Post", {
-                  name: this.state.email
+                  name: this.state.name
                 })
               }
             />

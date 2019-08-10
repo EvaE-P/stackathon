@@ -1,19 +1,9 @@
 import React, { Component } from "react";
-import * as WebBrowser from "expo-web-browser";
-import {
-  Modal,
-  TextInput,
-  View,
-  TouchableHighlight,
-  Image,
-  StyleSheet,
-  Text
-} from "react-native";
+import { TextInput, View, StyleSheet, Text } from "react-native";
+import * as firebase from "firebase";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
-
 import { FirebaseWrapper } from "../firebase/firebase";
-import { ProfileScreen } from "./Profile";
 
 export default class CreatePostScreen extends React.Component {
   constructor(props) {
@@ -26,9 +16,8 @@ export default class CreatePostScreen extends React.Component {
     };
   }
   async componentDidMount() {}
-  async createPost() {
+  async createUser() {
     try {
-      console.log("ayoooo", this.state.email);
       // make call to Firebase
       await FirebaseWrapper.GetInstance().CreateNewDocument("users", {
         firstName: this.state.firstName,
@@ -36,14 +25,26 @@ export default class CreatePostScreen extends React.Component {
         email: this.state.email,
         password: this.state.password
       });
-      // this.props.closeModal();
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .catch(function(error) {
+          // Handle Errors here.
+          console.log("firebase auth did not work", error);
+          // ...
+        });
+      return this.setState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "******"
+      });
     } catch (err) {
       console.log("something wrong component post", err);
     }
   }
 
   render() {
-    console.log("is this inside of SignUp");
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <View style={{ marginTop: 25 }}>
@@ -83,7 +84,7 @@ export default class CreatePostScreen extends React.Component {
             icon={<Icon name="trophy" />}
             title="Submit"
             type="outline"
-            onPress={() => this.createPost()}
+            onPress={() => this.createUser()}
           />
 
           {this.state.password.length === 6 ? (

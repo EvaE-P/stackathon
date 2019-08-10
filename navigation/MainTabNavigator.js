@@ -4,7 +4,7 @@ import {
   createStackNavigator,
   createBottomTabNavigator
 } from "react-navigation";
-import { ProfileScreen } from "../components/Profile";
+import { ProfileScreen } from "../components/MainScreen";
 import CreatePostScreen from "../components/SignUp";
 
 import TabBarIcon from "../components/TabBarIcon";

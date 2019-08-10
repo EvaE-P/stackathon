@@ -5,10 +5,11 @@ import {
   createStackNavigator
 } from "react-navigation";
 //import my screennavigator
-import { ProfileScreen } from "../components/Profile";
+import { ProfileScreen } from "../components/MainScreen";
 import CreatePostScreen from "../components/SignUp";
 import SigninInScreen from "../screens/SigninInScreen";
 import Post from "../components/Post";
+import SignOut from "../components/SignOut";
 import MainTabNavigator from "./MainTabNavigator";
 // import ScreenSwitchNav from "./ScreenNavigator";
 
@@ -22,6 +23,7 @@ export default createAppContainer(
     ProfileScreen: { screen: ProfileScreen },
     CreatePostScreen: { screen: CreatePostScreen },
     Post: { screen: Post },
-    SigninInScreen: { screen: SigninInScreen }
+    SigninInScreen: { screen: SigninInScreen },
+    SignOut: { screen: SignOut }
   })
 );
