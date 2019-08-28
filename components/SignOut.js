@@ -11,18 +11,10 @@ export default class SignOut extends React.Component {
 
   async signOut() {
     try {
-      console.log("it works to sign out");
-      // make call to Firebase
       await firebase
         .auth()
         .signOut()
-        .then(function() {
-          // Sign-out successful.
-        })
-        .catch(function(error) {
-          console.log("Could not sign out", error);
-        });
-      //this.props.closeModal();
+        .then(function() {});
     } catch (err) {
       console.log("something wrong signin out", err);
     }
