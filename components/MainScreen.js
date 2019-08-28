@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { View, Image, StyleSheet, Button, Text, Animated } from "react-native";
 import { firebaseConfig } from "../firebase/config";
 import { FirebaseWrapper } from "../firebase/firebase";
-import * as firebase from "firebase";
+
 class FadeInView extends React.Component {
   state = {
     fadeAnim: new Animated.Value(0) // Initial value for opacity: 0

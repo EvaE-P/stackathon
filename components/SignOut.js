@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import { TextInput, View, Image, StyleSheet, Text } from "react-native";
-import { FirebaseWrapper } from "../firebase/firebase";
+import React from "react";
+import { View, StyleSheet, Text } from "react-native";
+
 import * as firebase from "firebase";
 import { Button } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 export default class SignOut extends React.Component {
   constructor(props) {
