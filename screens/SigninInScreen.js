@@ -19,16 +19,11 @@ export default class SigninInScreen extends Component {
   async componentDidMount() {}
   async signIn() {
     try {
-      console.log("ayoooo", this.state.email);
-      // make call to Firebase
-
       await firebase
         .auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
         .catch(function(error) {
-          // Handle Errors here.
           console.log("could not sign IN", error);
-          // ...
         });
       if (await firebase.auth().currentUser) {
         const name = this.state.email;
