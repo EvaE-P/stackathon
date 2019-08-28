@@ -73,10 +73,13 @@ export default class CreatePostScreen extends React.Component {
             style={styles.input}
           />
           <TextInput
-            multiline={true}
-            numberOfLines={2}
+            multiline={false}
+            numberOfLines={1}
             onChangeText={password => this.setState({ password })}
             placeholder="Your password"
+            returnKeyType="go"
+            autoCapitalize="none"
+            secureTextEntry={true}
             value={this.state.password}
             style={styles.input}
           />
