@@ -37,7 +37,7 @@ export default class CreatePostScreen extends React.Component {
         firstName: "",
         lastName: "",
         email: "",
-        password: "******"
+        password: ""
       });
     } catch (err) {
       console.log("something wrong component post", err);
@@ -49,24 +49,24 @@ export default class CreatePostScreen extends React.Component {
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <View style={{ marginTop: 25 }}>
           <TextInput
-            multiline={true}
-            numberOfLines={2}
+            multiline={false}
+            numberOfLines={1}
             onChangeText={firstName => this.setState({ firstName })}
             placeholder="Your first name"
             value={this.state.firstName}
             style={styles.input}
           />
           <TextInput
-            multiline={true}
-            numberOfLines={2}
+            multiline={false}
+            numberOfLines={1}
             onChangeText={lastName => this.setState({ lastName })}
             placeholder="Your last name"
             value={this.state.lastName}
             style={styles.input}
           />
           <TextInput
-            multiline={true}
-            numberOfLines={2}
+            multiline={false}
+            numberOfLines={1}
             onChangeText={email => this.setState({ email })}
             placeholder="Your email"
             value={this.state.email}
