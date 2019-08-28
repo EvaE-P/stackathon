@@ -48,17 +48,19 @@ export default class SigninInScreen extends Component {
             numberOfLines={2}
             onChangeText={email => this.setState({ email })}
             placeholder="Your email"
+            autoCapitalize="none"
             value={this.state.email}
             style={styles.input}
           />
+
           <TextInput
-            multiline={true}
-            numberOfLines={2}
+            multiline={false}
+            numberOfLines={1}
             onChangeText={password => this.setState({ password })}
-            secureTextEntry={true}
-            password={true}
-            blurOnSubmit={true}
             placeholder="Your password"
+            returnKeyType="go"
+            autoCapitalize="none"
+            secureTextEntry={true}
             value={this.state.password}
             style={styles.input}
           />
